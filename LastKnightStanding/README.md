@@ -15,4 +15,4 @@
     - wenn ein Ritter K.O. geht
     - wenn nur noch ein Ritter übrig bleibt und damit gewinnt
 
- 
+ SRC: https://codesandbox.io/s/upbeat-forest-pom86
