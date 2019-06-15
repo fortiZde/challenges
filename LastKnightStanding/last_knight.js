@@ -23,7 +23,7 @@ const Knight = (name, health = 100, minDmg = 1, maxDmg = 5) => {
         attack: (target) => {
             attackCount++
             let dmg = Math.floor(Math.random() * (maxDmg - minDmg + 1)) + minDmg
-            console.log(`${name}[${health}] hits ${target.name}[${target.health}] with ${dmg} ${(dmg === 5) ? "CRIT" : ""}`)
+            console.log(`${name}[${health}] hits ${target.name}[${target.health}] with ${dmg} ${(dmg === maxDmg) ? "CRIT" : ""}`)
             target.takeDamage(dmg)
         },
         isAlive: () => (health > 0),
@@ -49,19 +49,23 @@ const LastKnightStandingRule = participients => {
             `Attacks: ${participient.attackCount}`,
             (participient.isAlive()) ? "" : "[DEAD]")
     }
-    
+
     const roundReducer = (attackers, attacker, currentIndex, participients) => {
         let victim = participients[(currentIndex + 1) % participients.length]
         if (attacker.isAlive()) {
             attackers.push(attacker)
             attacker.attack(victim)
         }
-        return attackers.filter((elem) => elem.isAlive())
+        return attackers;
     }
 
     while (participientsAlive.length > 1) {
         console.log(`=========== Round ${round} ===========`)
-        participientsAlive = participientsAlive.reduce(roundReducer,[])
+
+        participientsAlive = participientsAlive
+            .reduce(roundReducer, [])
+            .filter((elem) => elem.isAlive())
+
         round++
         console.log(`=========== Participients ===========`)
         participients.map(stats)
@@ -81,9 +85,9 @@ const GameAreaInit = (name, rules, participients) => {
 
 GameAreaInit('Last Knight Standing', LastKnightStandingRule,
     [Knight('John', 100),
-        Knight('Wilson', 100),
-        Knight('Deckard', 100),
-        Knight('Richard', 100),
-        Knight('Sam', 100),
-        Knight('Paeffluff', 100),
+    Knight('Wilson', 100),
+    Knight('Deckard', 100),
+    Knight('Richard', 100),
+    Knight('Sam', 100),
+    Knight('Paeffluff', 100),
     ])
